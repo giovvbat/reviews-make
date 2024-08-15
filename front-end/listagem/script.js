@@ -15,6 +15,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     <td>${product.name}</td>
                     <td>${product.brand}</td>
                     <td>${product.value}</td>
+                    <td><button class="btn btn-primary btn-extra-small" onclick="reviews('${product.productId}')">Ver Detalhes</button></td>
+
                 `;
                 table.appendChild(row);
             });
@@ -24,3 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Erro ao carregar os produtos');
         });
 });
+
+function reviews(productId) {
+    window.location.href = `../reviews/listagem/reviews.html?productId=${productId}`;
+};

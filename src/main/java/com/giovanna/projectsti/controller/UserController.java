@@ -5,7 +5,6 @@ import com.giovanna.projectsti.dto.UserRecordDto;
 import com.giovanna.projectsti.model.ProductModel;
 import com.giovanna.projectsti.model.UserModel;
 import com.giovanna.projectsti.repository.UserRepository;
-import com.giovanna.projectsti.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,6 @@ import java.util.Optional;
 public class UserController {
     @Autowired
     private UserRepository userRepository;
-    private UserService userService;
 
     @PostMapping("/register")
     public ResponseEntity<Object> saveUser(@RequestBody @Valid UserRecordDto userRecordDto) {

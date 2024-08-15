@@ -13,7 +13,7 @@ public class UserModel implements Serializable {
     @Column(name = "user_id_name")
     private String name;
 
-    @Column(name = "product_email")
+    @Column(name = "user_email")
     private String email;
 
     @Column(name = "user_password")

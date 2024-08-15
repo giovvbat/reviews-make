@@ -3,6 +3,7 @@ package com.giovanna.projectsti.controller;
 import com.giovanna.projectsti.dto.ProductRecordDto;
 import com.giovanna.projectsti.model.ProductModel;
 import com.giovanna.projectsti.repository.ProductRepository;
+import com.giovanna.projectsti.repository.ReviewRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ import java.util.UUID;
 public class ProductController {
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private ReviewRepository reviewRepository;
 
     @PostMapping("/products")
     public ResponseEntity<ProductModel> saveProduct(@RequestBody @Valid ProductRecordDto productRecordDto) {
@@ -47,6 +50,17 @@ public class ProductController {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(product.get());
+    }
+
+    @GetMapping("/products/{id}/reviews")
+    public ResponseEntity<Object> getAllReviewsByProduct(@PathVariable(value = "id") UUID productId) {
+        Optional<ProductModel> product = productRepository.findById(productId);
+
+        if(product.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found!");
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(reviewRepository.findAllByReviewProduct(product.get()));
     }
 
     @PutMapping("/products/{id}")
