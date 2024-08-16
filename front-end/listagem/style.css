@@ -16,7 +16,7 @@ h2 {
 
 .table-wrapper {
     overflow-y: auto;
-    max-height: 350px;
+    max-height: 320px;
 }
 
 .table tr th {
@@ -78,4 +78,9 @@ h2 {
     font-size: 0.75rem;
     line-height: 1;
     border-radius: 0.2rem;
+}
+
+.table td, .table th {
+    vertical-align: middle;
+    white-space: pre-wrap;
 }

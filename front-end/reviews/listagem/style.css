@@ -16,7 +16,7 @@ h2 {
 
 .table-wrapper {
     overflow-y: auto;
-    max-height: 350px;
+    max-height: 320px;
 }
 
 .table tr th {
@@ -62,7 +62,7 @@ h2 {
     margin-bottom: 0;
 }
 
-#pink-link {
+.pink-link {
     color: #E91E63; 
     font-size: 12px;
     text-decoration: none;
@@ -70,6 +70,11 @@ h2 {
     margin-left: 2px;
 }
 
-#pink-link:hover {
+.pink-link:hover {
     text-decoration: underline;
+}
+
+.table td, .table th {
+    vertical-align: middle;
+    white-space: pre-wrap;
 }

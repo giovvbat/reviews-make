@@ -1,8 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
 const params = new URLSearchParams(window.location.search);
 const productId = params.get('productId');
+
+function add_review() {
+    const add_review_link = document.getElementById("add-review-link")
+    add_review_link.setAttribute("href", `../cadastro/add-review.html?productId=${productId}`)
+}
     
 if (productId) {
+    add_review()
     fetch(`http://localhost:8080/products/${productId}/reviews`)
         .then(response => {
             if (response.ok) {
