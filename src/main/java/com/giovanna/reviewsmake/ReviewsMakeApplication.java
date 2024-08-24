@@ -1,4 +1,4 @@
-package com.giovanna.projectsti;
+package com.giovanna.reviewsmake;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

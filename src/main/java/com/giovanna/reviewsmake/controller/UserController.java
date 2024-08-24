@@ -1,10 +1,9 @@
-package com.giovanna.projectsti.controller;
+package com.giovanna.reviewsmake.controller;
 
-import com.giovanna.projectsti.dto.UserLoginRecordDto;
-import com.giovanna.projectsti.dto.UserRecordDto;
-import com.giovanna.projectsti.model.ProductModel;
-import com.giovanna.projectsti.model.UserModel;
-import com.giovanna.projectsti.repository.UserRepository;
+import com.giovanna.reviewsmake.dto.UserLoginRecordDto;
+import com.giovanna.reviewsmake.dto.UserRecordDto;
+import com.giovanna.reviewsmake.model.UserModel;
+import com.giovanna.reviewsmake.repository.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

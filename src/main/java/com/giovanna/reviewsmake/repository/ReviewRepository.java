@@ -1,8 +1,7 @@
-package com.giovanna.projectsti.repository;
+package com.giovanna.reviewsmake.repository;
 
-import com.giovanna.projectsti.model.ProductModel;
-import com.giovanna.projectsti.model.ReviewModel;
-import com.giovanna.projectsti.model.UserModel;
+import com.giovanna.reviewsmake.model.ProductModel;
+import com.giovanna.reviewsmake.model.ReviewModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.giovanna.projectsti.model;
+package com.giovanna.reviewsmake.model;
 
 import jakarta.persistence.*;
 

@@ -1,14 +1,13 @@
-package com.giovanna.projectsti.controller;
+package com.giovanna.reviewsmake.controller;
 
-import com.giovanna.projectsti.dto.ReviewRecordDto;
-import com.giovanna.projectsti.model.ProductModel;
-import com.giovanna.projectsti.model.ReviewModel;
-import com.giovanna.projectsti.model.UserModel;
-import com.giovanna.projectsti.repository.ProductRepository;
-import com.giovanna.projectsti.repository.ReviewRepository;
-import com.giovanna.projectsti.repository.UserRepository;
+import com.giovanna.reviewsmake.dto.ReviewRecordDto;
+import com.giovanna.reviewsmake.model.ProductModel;
+import com.giovanna.reviewsmake.model.ReviewModel;
+import com.giovanna.reviewsmake.model.UserModel;
+import com.giovanna.reviewsmake.repository.ProductRepository;
+import com.giovanna.reviewsmake.repository.ReviewRepository;
+import com.giovanna.reviewsmake.repository.UserRepository;
 import jakarta.validation.Valid;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

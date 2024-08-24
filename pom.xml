@@ -9,7 +9,7 @@
 		<relativePath/>
 	</parent>
 	<groupId>com.giovanna</groupId>
-	<artifactId>projeto-sti</artifactId>
+	<artifactId>reviews-make</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>reviews-make</name>
 	<description>projeto de gerenciamento de reviews de maquiagem</description>

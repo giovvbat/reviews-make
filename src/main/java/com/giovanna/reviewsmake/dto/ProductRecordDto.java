@@ -1,4 +1,4 @@
-package com.giovanna.projectsti.dto;
+package com.giovanna.reviewsmake.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

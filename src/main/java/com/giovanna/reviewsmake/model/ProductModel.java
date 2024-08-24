@@ -1,11 +1,9 @@
-package com.giovanna.projectsti.model;
+package com.giovanna.reviewsmake.model;
 
 import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
