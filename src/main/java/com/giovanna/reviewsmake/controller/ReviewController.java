@@ -11,6 +11,9 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,7 +34,7 @@ public class ReviewController {
     @PostMapping
     public ResponseEntity<Object> saveReview(@RequestBody @Valid ReviewRecordDto reviewRecordDto) {
         var reviewModel = new ReviewModel();
-        var user = userRepository.findById(reviewRecordDto.username());
+        var user = userRepository.findByUsername(reviewRecordDto.username());
         var product = productRepository.findById(reviewRecordDto.productId());
 
         if (user.isEmpty()) {
@@ -41,6 +44,14 @@ public class ReviewController {
         if (product.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found!");
         }
+
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+//        Optional<UserModel> user = userRepository.findByUsername(userDetails.getUsername());
+//
+//        if (user.isEmpty()) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found!");
+//        }
 
         reviewModel.setReviewUser(user.get());
         reviewModel.setReviewProduct(product.get());
@@ -71,21 +82,10 @@ public class ReviewController {
         return ResponseEntity.status(HttpStatus.OK).body(review.get());
     }
 
-    @GetMapping("products/{productId}")
-    public ResponseEntity<Object> getAllReviewsByProduct(@PathVariable(value = "productId") UUID productId) {
-        Optional<ProductModel> product = productRepository.findById(productId);
-
-        if(product.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found!");
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(reviewRepository.findAllByReviewProduct(product.get()));
-    }
-
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateReview(@PathVariable(value="id") UUID reviewId, @RequestBody @Valid ReviewRecordDto reviewRecordDto) {
         Optional<ReviewModel> review = reviewRepository.findById(reviewId);
-        Optional<UserModel> user = userRepository.findById(reviewRecordDto.username());
+        Optional<UserModel> user = userRepository.findByUsername(reviewRecordDto.username());
         Optional<ProductModel> product = productRepository.findById(reviewRecordDto.productId());
 
         if (user.isEmpty()) {

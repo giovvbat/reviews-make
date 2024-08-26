@@ -10,7 +10,7 @@ document.getElementById('user-form').addEventListener('submit', function(event) 
 
 function cadastrar() {
     const usuario = {
-        name: dom_nome.value,
+        username: dom_nome.value,
         email: dom_email.value,
         password: dom_senha.value
     }

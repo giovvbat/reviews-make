@@ -15,7 +15,7 @@ public class ReviewModel implements Serializable {
     @Column(name = "review_id")
     private UUID reviewId;
 
-    @JoinColumn(name = "user_id_name")
+    @JoinColumn(name = "user_name")
     @ManyToOne
     private UserModel reviewUser;
 

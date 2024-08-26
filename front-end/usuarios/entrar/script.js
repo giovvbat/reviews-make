@@ -8,7 +8,7 @@ document.getElementById('login-form').addEventListener('submit', function(event)
 
 function verificar() {
     const usuario = {
-        name: dom_nome.value,
+        username: dom_nome.value,
         password: dom_senha.value
     }
     fetch('http://localhost:8080/users/login', { 
@@ -27,8 +27,15 @@ function verificar() {
         }
     })
     .then(data => {
-        console.log(data);
-        window.location.href = '../../listagem/home.html';
+        if(data.token) {
+            localStorage.setItem('token', data.token);
+            console.log('Login realizado com sucesso!');
+            alert(''); 
+            window.location.href = '../../listagem/home.html';
+        }
+        else {
+            console.error('Falha ao realizar o login!');
+        }
     })
     .catch(error => {
         alert('Erro: ' + error.message);

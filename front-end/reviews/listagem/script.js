@@ -23,7 +23,7 @@ if (productId) {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${review.reviewProduct.name}</td>
-                    <td>${review.reviewUser.name}</td>
+                    <td>${review.reviewUser.username}</td>
                     <td>${review.comment}</td>
                 `;
                 table.appendChild(row);

@@ -11,7 +11,7 @@ function redefinir() {
     const parte_url = encodeURIComponent(dom_nome.value);
 
     const usuario = {
-        name: dom_nome.value,
+        username: dom_nome.value,
         password: dom_senha.value,
         email: dom_email.value
     }

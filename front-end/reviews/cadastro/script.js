@@ -1,3 +1,4 @@
+const token = localStorage.getItem('token');
 const dom_nome = document.getElementById('nome');
 const dom_comentario = document.getElementById('comentario');
 const params = new URLSearchParams(window.location.search);
@@ -28,7 +29,8 @@ function avaliar() {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
         },
         body: JSON.stringify(review)
     })
