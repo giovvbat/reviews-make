@@ -8,9 +8,9 @@ import com.giovanna.reviewsmake.repository.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.giovanna.reviewsmake.security.TokenService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,13 +24,10 @@ import java.util.UUID;
 public class UserController {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
     private PasswordEncoder passwordEncoder;
-//    @Autowired
-//    private TokenService tokenService;
-
-    public UserController() {
-        passwordEncoder = new BCryptPasswordEncoder();
-    }
+    @Autowired
+    private TokenService tokenService;
 
     @PostMapping("/register")
     public ResponseEntity<Object> saveUser(@RequestBody @Valid UserRecordDto userRecordDto) {
@@ -58,8 +55,9 @@ public class UserController {
 
         if (user.isPresent()) {
             if (passwordEncoder.matches(loginRequestRecordDto.password(), user.get().getPassword())) {
-                //String token = tokenService.generateToken(user.get());
-                return ResponseEntity.status(HttpStatus.OK).body(user.get());
+                String token = tokenService.generateToken(user.get());
+                return ResponseEntity.status(HttpStatus.OK).body(new LoginResponseRecordDto(loginRequestRecordDto.username(), token));
+                //return ResponseEntity.status(HttpStatus.OK).body(user.get());
             }
         }
 

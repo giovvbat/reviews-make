@@ -33,9 +33,11 @@ public class ReviewController {
 
     @PostMapping
     public ResponseEntity<Object> saveReview(@RequestBody @Valid ReviewRecordDto reviewRecordDto) {
-        var reviewModel = new ReviewModel();
-        var user = userRepository.findByUsername(reviewRecordDto.username());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        Optional<UserModel> user = userRepository.findByUsername(userDetails.getUsername());
         var product = productRepository.findById(reviewRecordDto.productId());
+        var reviewModel = new ReviewModel();
 
         if (user.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found!");
@@ -44,14 +46,6 @@ public class ReviewController {
         if (product.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found!");
         }
-
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-//        Optional<UserModel> user = userRepository.findByUsername(userDetails.getUsername());
-//
-//        if (user.isEmpty()) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found!");
-//        }
 
         reviewModel.setReviewUser(user.get());
         reviewModel.setReviewProduct(product.get());
@@ -85,8 +79,10 @@ public class ReviewController {
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateReview(@PathVariable(value="id") UUID reviewId, @RequestBody @Valid ReviewRecordDto reviewRecordDto) {
         Optional<ReviewModel> review = reviewRepository.findById(reviewId);
-        Optional<UserModel> user = userRepository.findByUsername(reviewRecordDto.username());
         Optional<ProductModel> product = productRepository.findById(reviewRecordDto.productId());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        Optional<UserModel> user = userRepository.findByUsername(userDetails.getUsername());
 
         if (user.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found!");

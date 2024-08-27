@@ -5,5 +5,5 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.UUID;
 
-public record ReviewRecordDto(@NotBlank String username, @NotNull UUID productId, @NotBlank String comment) {
+public record ReviewRecordDto(@NotNull UUID productId, @NotBlank String comment) {
 }

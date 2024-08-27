@@ -30,7 +30,6 @@ function verificar() {
         if(data.token) {
             localStorage.setItem('token', data.token);
             console.log('Login realizado com sucesso!');
-            alert(''); 
             window.location.href = '../../listagem/home.html';
         }
         else {
