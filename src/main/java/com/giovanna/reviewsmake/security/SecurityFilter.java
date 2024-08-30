@@ -27,6 +27,12 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        /*secure free endpoints against invalid jwt-tokens*/
+        if (freeEndpoints(request)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String token = this.resolveToken(request);
         String login = tokenService.verifyToken(token);
 
@@ -55,5 +61,10 @@ public class SecurityFilter extends OncePerRequestFilter {
 
         /*no token provided!*/
         return null;
+    }
+
+    private boolean freeEndpoints(HttpServletRequest request) {
+        return request.getRequestURI().startsWith("/users/login") ||
+        request.getRequestURI().startsWith("/users/register");
     }
 }

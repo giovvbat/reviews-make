@@ -1,5 +1,4 @@
 const token = localStorage.getItem('token');
-//const dom_nome = document.getElementById('nome');
 const dom_comentario = document.getElementById('comentario');
 const params = new URLSearchParams(window.location.search);
 const productId = params.get('productId');
@@ -21,7 +20,6 @@ if (productId) {
 
 function avaliar() {
     const review = {
-        //username: dom_nome.value,
         productId: productId,
         comment: dom_comentario.value
     }

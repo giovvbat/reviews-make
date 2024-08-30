@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+const token = localStorage.getItem('token');
 const params = new URLSearchParams(window.location.search);
 const productId = params.get('productId');
 
@@ -6,10 +6,21 @@ function add_review() {
     const add_review_link = document.getElementById("add-review-link")
     add_review_link.setAttribute("href", `../cadastro/add-review.html?productId=${productId}`)
 }
-    
-if (productId) {
-    add_review()
-    fetch(`http://localhost:8080/products/${productId}/reviews`)
+
+document.addEventListener('DOMContentLoaded', function() {
+    if (!token) {
+        alert('Usuário não autenticado');
+        return;
+    }
+    if (productId) {
+        add_review()
+        fetch(`http://localhost:8080/products/${productId}/reviews`, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        })
         .then(response => {
             if (response.ok) {
                 return response.json();
@@ -33,7 +44,7 @@ if (productId) {
             console.error('Erro:', error);
             alert('Erro ao carregar as reviews');
         });
-} else {
-    window.location.href = '../../listagem/home.html';
-}
+    } else {
+        window.location.href = '../../listagem/home.html';
+    }
 });

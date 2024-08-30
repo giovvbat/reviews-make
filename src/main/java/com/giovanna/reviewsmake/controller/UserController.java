@@ -57,7 +57,6 @@ public class UserController {
             if (passwordEncoder.matches(loginRequestRecordDto.password(), user.get().getPassword())) {
                 String token = tokenService.generateToken(user.get());
                 return ResponseEntity.status(HttpStatus.OK).body(new LoginResponseRecordDto(loginRequestRecordDto.username(), token));
-                //return ResponseEntity.status(HttpStatus.OK).body(user.get());
             }
         }
 

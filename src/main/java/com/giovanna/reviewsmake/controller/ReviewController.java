@@ -33,9 +33,7 @@ public class ReviewController {
 
     @PostMapping
     public ResponseEntity<Object> saveReview(@RequestBody @Valid ReviewRecordDto reviewRecordDto) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        Optional<UserModel> user = userRepository.findByUsername(userDetails.getUsername());
+        Optional<UserModel> user = userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         var product = productRepository.findById(reviewRecordDto.productId());
         var reviewModel = new ReviewModel();
 
@@ -80,9 +78,7 @@ public class ReviewController {
     public ResponseEntity<Object> updateReview(@PathVariable(value="id") UUID reviewId, @RequestBody @Valid ReviewRecordDto reviewRecordDto) {
         Optional<ReviewModel> review = reviewRepository.findById(reviewId);
         Optional<ProductModel> product = productRepository.findById(reviewRecordDto.productId());
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        Optional<UserModel> user = userRepository.findByUsername(userDetails.getUsername());
+        Optional<UserModel> user = userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 
         if (user.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found!");
