@@ -7,6 +7,7 @@ import com.giovanna.reviewsmake.model.UserModel;
 import com.giovanna.reviewsmake.repository.ProductRepository;
 import com.giovanna.reviewsmake.repository.ReviewRepository;
 import com.giovanna.reviewsmake.repository.UserRepository;
+import com.giovanna.reviewsmake.service.ReviewService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,91 +26,30 @@ import java.util.UUID;
 @RequestMapping("/reviews")
 public class ReviewController {
     @Autowired
-    private ProductRepository productRepository;
-    @Autowired
-    private ReviewRepository reviewRepository;
-    @Autowired
-    private UserRepository userRepository;
+    ReviewService reviewService;
 
     @PostMapping
     public ResponseEntity<Object> saveReview(@RequestBody @Valid ReviewRecordDto reviewRecordDto) {
-        Optional<UserModel> user = userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-        var product = productRepository.findById(reviewRecordDto.productId());
-        var reviewModel = new ReviewModel();
-
-        if (user.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found!");
-        }
-
-        if (product.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found!");
-        }
-
-        reviewModel.setReviewUser(user.get());
-        reviewModel.setReviewProduct(product.get());
-        reviewModel.setComment(reviewRecordDto.comment());
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(reviewRepository.save(reviewModel));
+        return reviewService.saveReview(reviewRecordDto);
     }
 
     @GetMapping
     public ResponseEntity<Object> getAllReviews() {
-        List<ReviewModel> reviews = reviewRepository.findAll();
-
-        if (reviews.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No reviews found!");
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(reviewRepository.findAll());
+        return reviewService.getAllReviews();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getReview(@PathVariable(value="id") UUID reviewId) {
-        Optional<ReviewModel> review = reviewRepository.findById(reviewId);
-
-        if(review.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Review not found!");
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(review.get());
+        return reviewService.getReview(reviewId);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateReview(@PathVariable(value="id") UUID reviewId, @RequestBody @Valid ReviewRecordDto reviewRecordDto) {
-        Optional<ReviewModel> review = reviewRepository.findById(reviewId);
-        Optional<ProductModel> product = productRepository.findById(reviewRecordDto.productId());
-        Optional<UserModel> user = userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-
-        if (user.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found!");
-        }
-
-        if (product.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found!");
-        }
-
-        if (review.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Review not found!");
-        }
-
-        var reviewModel = review.get();
-        reviewModel.setReviewProduct(product.get());
-        reviewModel.setReviewUser(user.get());
-        reviewModel.setComment(reviewRecordDto.comment());
-
-        return ResponseEntity.status(HttpStatus.OK).body(reviewRepository.save(reviewModel));
+        return reviewService.updateReview(reviewId, reviewRecordDto);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteReview(@PathVariable(value="id") UUID reviewId) {
-        Optional<ReviewModel> review = reviewRepository.findById(reviewId);
-
-        if (review.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Review not found!");
-        }
-
-        reviewRepository.deleteById(reviewId);
-        return ResponseEntity.status(HttpStatus.OK).body("Review deleted!");
+        return reviewService.deleteReview(reviewId);
     }
-
 }

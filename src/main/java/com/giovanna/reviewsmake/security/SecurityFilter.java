@@ -1,5 +1,6 @@
 package com.giovanna.reviewsmake.security;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.giovanna.reviewsmake.model.UserModel;
 import com.giovanna.reviewsmake.repository.UserRepository;
 import jakarta.servlet.FilterChain;
@@ -27,26 +28,26 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        /*secure free endpoints against invalid jwt-tokens*/
-        if (freeEndpoints(request)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
         String token = this.resolveToken(request);
-        String login = tokenService.verifyToken(token);
 
-        /*sucess while verifying token*/
-        if (login != null) {
-            Optional<UserModel> user = userRepository.findByUsername(login);
+        /*success while retrieving token*/
+        if (token != null) {
+            String login = tokenService.verifyToken(token);
 
-            if (user.isEmpty()) {
-                throw new RuntimeException("Invalid username!");
+            /*success while verifying user from token*/
+            if (login != null) {
+                Optional<UserModel> user = userRepository.findByUsername(login);
+
+                if (user.isEmpty()) {
+                    /*fail while verifying token, no authentication possible*/
+                    filterChain.doFilter(request, response);
+                    return;
+                }
+
+                var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user.get(), null, authorities);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-
-            var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user.get(), null, authorities);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
         filterChain.doFilter(request, response);
@@ -61,10 +62,5 @@ public class SecurityFilter extends OncePerRequestFilter {
 
         /*no token provided!*/
         return null;
-    }
-
-    private boolean freeEndpoints(HttpServletRequest request) {
-        return request.getRequestURI().startsWith("/users/login") ||
-        request.getRequestURI().startsWith("/users/register");
     }
 }

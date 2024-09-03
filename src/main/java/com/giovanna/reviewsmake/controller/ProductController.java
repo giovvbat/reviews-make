@@ -4,6 +4,7 @@ import com.giovanna.reviewsmake.dto.ProductRecordDto;
 import com.giovanna.reviewsmake.model.ProductModel;
 import com.giovanna.reviewsmake.repository.ProductRepository;
 import com.giovanna.reviewsmake.repository.ReviewRepository;
+import com.giovanna.reviewsmake.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,71 +20,35 @@ import java.util.UUID;
 @CrossOrigin("*")
 public class ProductController {
     @Autowired
-    private ProductRepository productRepository;
-    @Autowired
-    private ReviewRepository reviewRepository;
+    ProductService productService;
 
     @PostMapping("/products")
     public ResponseEntity<ProductModel> saveProduct(@RequestBody @Valid ProductRecordDto productRecordDto) {
-        var productModel = new ProductModel();
-        BeanUtils.copyProperties(productRecordDto, productModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body(productRepository.save(productModel));
+        return productService.saveProduct(productRecordDto);
     }
 
     @GetMapping("/products")
     public ResponseEntity<Object> getAllProducts() {
-        List<ProductModel> products = productRepository.findAll();
-
-        if(products.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No products found!");
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(productRepository.findAll());
+        return productService.getAllProducts();
     }
 
     @GetMapping("/products/{id}")
     public ResponseEntity<Object> getProduct(@PathVariable(value="id") UUID productId) {
-        Optional<ProductModel> product = productRepository.findById(productId);
-
-        if(product.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found!");
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(product.get());
+        return productService.getProduct(productId);
     }
 
     @GetMapping("/products/{id}/reviews")
     public ResponseEntity<Object> getAllReviewsByProduct(@PathVariable(value = "id") UUID productId) {
-        Optional<ProductModel> product = productRepository.findById(productId);
-
-        if(product.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found!");
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(reviewRepository.findAllByReviewProduct(product.get()));
+        return productService.getAllReviewsByProduct(productId);
     }
 
     @PutMapping("/products/{id}")
     public ResponseEntity<Object> updateProduct(@PathVariable(value="id") UUID productId, @RequestBody @Valid ProductRecordDto productRecordDto) {
-        Optional<ProductModel> product = productRepository.findById(productId);
-
-        if(product.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found!");
-        }
-
-        BeanUtils.copyProperties(productRecordDto, product.get());
-        return ResponseEntity.status(HttpStatus.OK).body(productRepository.save(product.get()));
+        return productService.updateProduct(productId, productRecordDto);
     }
 
     @DeleteMapping("/products/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable(value="id") UUID productId) {
-        Optional<ProductModel> product = productRepository.findById(productId);
-
-        if(product.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found!");
-        }
-
-        productRepository.deleteById(productId);
-        return ResponseEntity.status(HttpStatus.OK).body("Product successfully deleted!");
+        return productService.deleteProduct(productId);
     }
 }

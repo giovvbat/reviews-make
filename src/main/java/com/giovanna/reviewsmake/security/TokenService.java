@@ -4,6 +4,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.giovanna.reviewsmake.model.UserModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -26,7 +28,7 @@ public class TokenService {
                     .sign(algorithm);
             return token;
         } catch(JWTCreationException exception) {
-            throw new JWTCreationException("Error while creating JWT token!", exception);
+            throw new JWTCreationException("Error while creating token!", exception);
         }
     }
 
@@ -38,7 +40,7 @@ public class TokenService {
                     .build()
                     .verify(token)
                     .getSubject();
-        } catch(JWTDecodeException exception) {
+        } catch(JWTVerificationException exception) {
             /*error while verifying token*/
             return null;
         }
