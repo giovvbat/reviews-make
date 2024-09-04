@@ -16,17 +16,13 @@
         <div class="card p-3 shadow-lg rounded-lg form-card">
             <h2 class="text-center mb-3">Redefinir Senha</h2>
             <form id="redefine-form">
-                <div class="mb-2">
-                    <label for="nome" class="form-label">Nome de usuário:</label>
-                    <input type="text" class="form-control" id="nome" placeholder="Digite o nome">
+                <div class="mb-2" id="current-password">
+                    <label for="atual-senha" class="form-label">Senha atual:</label>
+                    <input type="password" class="form-control" id="atual-senha" placeholder="Digite a senha atual">
                 </div>
-                <div class="mb-2">
-                    <label for="email" class="form-label">Email:</label>
-                    <input type="text" class="form-control" id="email" placeholder="Digite o email">
-                </div>
-                <div id="password">
-                    <label for="senha" class="form-label">Nova senha:</label>
-                    <input type="password" class="form-control" id="senha" placeholder="Digite a senha">
+                <div id="new-password">
+                    <label for="nova-senha" class="form-label">Nova senha:</label>
+                    <input type="password" class="form-control" id="nova-senha" placeholder="Digite a nova senha">
                 </div>
                 <span><a id="go-back-link" href="../entrar/login.html">já sabe a senha?</a></span>
                 <button type="submit" class="btn btn-primary w-100 mt-3">Confirmar</button>

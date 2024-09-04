@@ -1,4 +1,4 @@
-package com.giovanna.reviewsmake.exception;
+package com.giovanna.reviewsmake.handler.spring;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

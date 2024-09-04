@@ -1,19 +1,15 @@
 package com.giovanna.reviewsmake.service;
 
-import com.giovanna.reviewsmake.dto.LoginRequestRecordDto;
-import com.giovanna.reviewsmake.dto.LoginResponseRecordDto;
-import com.giovanna.reviewsmake.dto.UpdateUserResponseRecordDto;
-import com.giovanna.reviewsmake.dto.UserRecordDto;
+import com.giovanna.reviewsmake.dto.*;
+import com.giovanna.reviewsmake.exception.*;
 import com.giovanna.reviewsmake.model.UserModel;
 import com.giovanna.reviewsmake.repository.UserRepository;
 import com.giovanna.reviewsmake.security.TokenService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,91 +24,96 @@ public class UserService {
     @Autowired
     TokenService tokenService;
 
-    public ResponseEntity<Object> saveUser(UserRecordDto userRecordDto) {
+    public UserModel saveUser(UserRecordDto userRecordDto) {
         Optional<UserModel> userByUsername = userRepository.findByUsername(userRecordDto.username());
         Optional<UserModel> userByEmail = userRepository.findByEmail(userRecordDto.email());
 
         if (userByUsername.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already taken!");
+            throw new UsernameAlreadyTakenException();
         }
 
         if (userByEmail.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already taken!");
+            throw new EmailAlreadyTakenException();
         }
 
         var userModel = new UserModel();
         BeanUtils.copyProperties(userRecordDto, userModel);
         userModel.setPassword(passwordEncoder.encode(userRecordDto.password()));
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(userRepository.save(userModel));
+        return userRepository.save(userModel);
     }
 
-    public ResponseEntity<Object> validateUser(LoginRequestRecordDto loginRequestRecordDto) {
+    public LoginResponseRecordDto validateUser(LoginRequestRecordDto loginRequestRecordDto) {
         Optional<UserModel> user = userRepository.findByUsername(loginRequestRecordDto.username());
 
         if (user.isPresent()) {
             if (passwordEncoder.matches(loginRequestRecordDto.password(), user.get().getPassword())) {
                 String token = tokenService.generateToken(user.get());
-                return ResponseEntity.status(HttpStatus.OK).body(new LoginResponseRecordDto(loginRequestRecordDto.username(), token));
+                return new LoginResponseRecordDto(loginRequestRecordDto.username(), token);
             }
         }
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized credentials!");
+        throw new UnauthorizedCredentialsException();
     }
 
-    public ResponseEntity<Object> getAllUsers() {
+    public List<UserModel> getAllUsers() {
         List<UserModel> users = userRepository.findAll();
 
         if (users.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No users found!");
+            throw new NoUsersFoundException();
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(userRepository.findAll());
+        return userRepository.findAll();
     }
 
-    public ResponseEntity<Object> getUser(UUID userId) {
-        Optional<UserModel> user = userRepository.findById(userId);
-
-        if(user.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found!");
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(user.get());
+    public UserModel getUser(UUID userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Object> updateUser(UUID userId, UserRecordDto userRecordDto) {
-        Optional<UserModel> user = userRepository.findById(userId);
+    public UpdateUserResponseRecordDto updateUser(UUID userId, UserRecordDto userRecordDto) {
+        UserModel user = userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+
         Optional<UserModel> userByEmail = userRepository.findByEmail(userRecordDto.email());
         Optional<UserModel> userByUsername = userRepository.findByUsername(userRecordDto.username());
 
-        if (user.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found!");
-        }
-
         if (userByUsername.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already taken!");
+            throw new UsernameAlreadyTakenException();
         }
 
         if (userByEmail.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already taken!");
+            throw new EmailAlreadyTakenException();
         }
 
-        BeanUtils.copyProperties(userRecordDto, user.get());
-        user.get().setPassword(passwordEncoder.encode(userRecordDto.password()));
-        String token = tokenService.generateToken(user.get());
+        BeanUtils.copyProperties(userRecordDto, user);
+        user.setPassword(passwordEncoder.encode(userRecordDto.password()));
+        String token = tokenService.generateToken(user);
 
-        return ResponseEntity.status(HttpStatus.OK).body(new UpdateUserResponseRecordDto(userRepository.save(user.get()), token));
+        return new UpdateUserResponseRecordDto(userRepository.save(user), token);
     }
 
-    public ResponseEntity<String> deleteUser(UUID userId) {
-        Optional<UserModel> user = userRepository.findById(userId);
+    public UserModel redefineUserPassword(UpdateUserPasswordRecordDto updateUserPasswordRecordDto) {
+        UserModel user = userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
+                .orElseThrow(UserNotFoundException::new);
 
-        if (user.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found!");
+        if (!passwordEncoder.matches(updateUserPasswordRecordDto.currentPassword(), user.getPassword())) {
+            throw new UnauthorizedCredentialsException("Wrong password provided!");
         }
 
+        if (passwordEncoder.matches(updateUserPasswordRecordDto.newPassword(), user.getPassword())) {
+            throw new SamePasswordException();
+        }
+
+        user.setPassword(passwordEncoder.encode(updateUserPasswordRecordDto.newPassword()));
+
+        return userRepository.save(user);
+    }
+
+    public void deleteUser(UUID userId) {
+        userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+
         userRepository.deleteById(userId);
-        return ResponseEntity.status(HttpStatus.OK).body("User successfully deleted!");
     }
 }
