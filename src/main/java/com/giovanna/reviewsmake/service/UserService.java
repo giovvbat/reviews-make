@@ -93,7 +93,17 @@ public class UserService {
         return new UpdateUserResponseRecordDto(userRepository.save(user), token);
     }
 
-    public UserModel redefineUserPassword(UpdateUserPasswordRecordDto updateUserPasswordRecordDto) {
+    public UserModel redefineUserPassword(RedefineUserPasswordRecordDto redefineUserPasswordRecordDto) {
+        Optional<UserModel> userByCredential = userRepository.findByUsername(redefineUserPasswordRecordDto.credential())
+                .or(() -> userRepository.findByEmail(redefineUserPasswordRecordDto.credential()));
+
+        return userByCredential.map(user -> {
+            user.setPassword(passwordEncoder.encode(redefineUserPasswordRecordDto.password()));
+            return userRepository.save(user);
+        }).orElseThrow(() -> new UnauthorizedCredentialsException("Unauthorized credential!"));
+    }
+
+    public UserModel updateUserPassword(UpdateUserPasswordRecordDto updateUserPasswordRecordDto) {
         UserModel user = userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
                 .orElseThrow(UserNotFoundException::new);
 

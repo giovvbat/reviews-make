@@ -1,6 +1,5 @@
-const dom_nova_senha = document.getElementById('nova-senha');
-const dom_atual_senha = document.getElementById('atual-senha');
-const token = localStorage.getItem('token');
+const dom_nova_senha = document.getElementById('senha');
+const dom_credencial = document.getElementById('credencial');
 
 document.getElementById('redefine-form').addEventListener('submit', function(event) {
     event.preventDefault();
@@ -9,15 +8,14 @@ document.getElementById('redefine-form').addEventListener('submit', function(eve
 
 function redefinir() {
     const redefine_password = {
-        currentPassword: dom_atual_senha.value,
-        newPassword: dom_nova_senha.value
+        credential: dom_credencial.value,
+        password: dom_nova_senha.value
     }
-    fetch(`http://localhost:8080/users/password`, {
+    fetch(`http://localhost:8080/users/redefine-password`, {
         method: 'PUT',
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify(redefine_password)
     })

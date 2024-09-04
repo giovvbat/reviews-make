@@ -44,9 +44,16 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(userId, userRecordDto));
     }
 
-    @PutMapping("/password")
+    /*user is logged, wants to change password*/
+    @PutMapping("/update-password")
     public ResponseEntity<UserModel> updateUserPassword(@RequestBody @Valid UpdateUserPasswordRecordDto updateUserPasswordRecordDto) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.redefineUserPassword(updateUserPasswordRecordDto));
+        return ResponseEntity.status(HttpStatus.OK).body(userService.updateUserPassword(updateUserPasswordRecordDto));
+    }
+
+    /*user forgot password, wants to change password to make log-in possible*/
+    @PutMapping("/redefine-password")
+    public ResponseEntity<UserModel> redefineUserPassword(@RequestBody @Valid RedefineUserPasswordRecordDto redefineUserPasswordRecordDto) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.redefineUserPassword(redefineUserPasswordRecordDto));
     }
 
     @DeleteMapping("/{id}")

@@ -33,6 +33,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/users/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/users/register").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/users/redefine-password").permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception
