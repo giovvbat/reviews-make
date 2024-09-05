@@ -25,16 +25,7 @@ public class UserService {
     TokenService tokenService;
 
     public UserModel saveUser(UserRecordDto userRecordDto) {
-        Optional<UserModel> userByUsername = userRepository.findByUsername(userRecordDto.username());
-        Optional<UserModel> userByEmail = userRepository.findByEmail(userRecordDto.email());
-
-        if (userByUsername.isPresent()) {
-            throw new UsernameAlreadyTakenException();
-        }
-
-        if (userByEmail.isPresent()) {
-            throw new EmailAlreadyTakenException();
-        }
+        verifyAvailableUserCredential(new VerifyAvailableUserCredentialsRecordDto(userRecordDto.username(), userRecordDto.email()));
 
         var userModel = new UserModel();
         BeanUtils.copyProperties(userRecordDto, userModel);
@@ -75,17 +66,7 @@ public class UserService {
         UserModel user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
-        Optional<UserModel> userByEmail = userRepository.findByEmail(userRecordDto.email());
-        Optional<UserModel> userByUsername = userRepository.findByUsername(userRecordDto.username());
-
-        if (userByUsername.isPresent()) {
-            throw new UsernameAlreadyTakenException();
-        }
-
-        if (userByEmail.isPresent()) {
-            throw new EmailAlreadyTakenException();
-        }
-
+        verifyAvailableUserCredential(new VerifyAvailableUserCredentialsRecordDto(userRecordDto.username(), userRecordDto.email()));
         BeanUtils.copyProperties(userRecordDto, user);
         user.setPassword(passwordEncoder.encode(userRecordDto.password()));
         String token = tokenService.generateToken(user);
@@ -125,5 +106,15 @@ public class UserService {
                 .orElseThrow(UserNotFoundException::new);
 
         userRepository.deleteById(userId);
+    }
+
+    public void verifyAvailableUserCredential(VerifyAvailableUserCredentialsRecordDto verifyAvailableUserCredentialsRecordDto) {
+        if (userRepository.findByUsername(verifyAvailableUserCredentialsRecordDto.username()).isPresent()) {
+            throw new UsernameAlreadyTakenException();
+        }
+
+        if (userRepository.findByEmail(verifyAvailableUserCredentialsRecordDto.email()).isPresent()) {
+            throw new EmailAlreadyTakenException();
+        }
     }
 }

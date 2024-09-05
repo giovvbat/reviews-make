@@ -6,6 +6,8 @@ import com.giovanna.reviewsmake.model.ReviewModel;
 import com.giovanna.reviewsmake.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +29,11 @@ public class ProductController {
     @GetMapping("/products")
     public ResponseEntity<Object> getAllProducts() {
         return ResponseEntity.status(HttpStatus.OK).body(productService.getAllProducts());
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<ProductModel>> getAllPaginatedProducts(Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.OK).body(productService.getAllPaginatedProducts(pageable));
     }
 
     @GetMapping("/products/{id}")

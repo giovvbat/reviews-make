@@ -9,6 +9,10 @@ import com.giovanna.reviewsmake.repository.ProductRepository;
 import com.giovanna.reviewsmake.repository.ReviewRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,6 +39,10 @@ public class ProductService {
         }
 
         return productRepository.findAll();
+    }
+
+    public Page<ProductModel> getAllPaginatedProducts(Pageable pageable) {
+        return productRepository.findAll(pageable);
     }
 
     public ProductModel getProduct(UUID productId) {
