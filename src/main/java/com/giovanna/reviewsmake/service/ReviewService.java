@@ -1,10 +1,10 @@
 package com.giovanna.reviewsmake.service;
 
-import com.giovanna.reviewsmake.dto.ReviewRecordDto;
-import com.giovanna.reviewsmake.exception.ReviewNotFoundException;
-import com.giovanna.reviewsmake.exception.UserNotFoundException;
-import com.giovanna.reviewsmake.exception.NoReviewsFoundException;
-import com.giovanna.reviewsmake.exception.ProductNotFoundException;
+import com.giovanna.reviewsmake.dto.review.ReviewRecordDto;
+import com.giovanna.reviewsmake.infra.exception.review.ReviewNotFoundException;
+import com.giovanna.reviewsmake.infra.exception.user.UserNotFoundException;
+import com.giovanna.reviewsmake.infra.exception.review.NoReviewsFoundException;
+import com.giovanna.reviewsmake.infra.exception.product.ProductNotFoundException;
 import com.giovanna.reviewsmake.model.ProductModel;
 import com.giovanna.reviewsmake.model.ReviewModel;
 import com.giovanna.reviewsmake.model.UserModel;

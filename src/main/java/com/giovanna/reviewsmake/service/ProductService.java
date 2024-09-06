@@ -1,8 +1,8 @@
 package com.giovanna.reviewsmake.service;
 
-import com.giovanna.reviewsmake.dto.ProductRecordDto;
-import com.giovanna.reviewsmake.exception.NoProductsFoundException;
-import com.giovanna.reviewsmake.exception.ProductNotFoundException;
+import com.giovanna.reviewsmake.dto.product.ProductRecordDto;
+import com.giovanna.reviewsmake.infra.exception.product.NoProductsFoundException;
+import com.giovanna.reviewsmake.infra.exception.product.ProductNotFoundException;
 import com.giovanna.reviewsmake.model.ProductModel;
 import com.giovanna.reviewsmake.model.ReviewModel;
 import com.giovanna.reviewsmake.repository.ProductRepository;
@@ -10,9 +10,7 @@ import com.giovanna.reviewsmake.repository.ReviewRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

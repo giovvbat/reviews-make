@@ -1,10 +1,10 @@
 package com.giovanna.reviewsmake.service;
 
-import com.giovanna.reviewsmake.dto.*;
-import com.giovanna.reviewsmake.exception.*;
+import com.giovanna.reviewsmake.dto.user.*;
+import com.giovanna.reviewsmake.infra.exception.user.*;
 import com.giovanna.reviewsmake.model.UserModel;
 import com.giovanna.reviewsmake.repository.UserRepository;
-import com.giovanna.reviewsmake.security.TokenService;
+import com.giovanna.reviewsmake.infra.security.TokenService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;

@@ -1,6 +1,6 @@
 package com.giovanna.reviewsmake.controller;
 
-import com.giovanna.reviewsmake.dto.ProductRecordDto;
+import com.giovanna.reviewsmake.dto.product.ProductRecordDto;
 import com.giovanna.reviewsmake.model.ProductModel;
 import com.giovanna.reviewsmake.model.ReviewModel;
 import com.giovanna.reviewsmake.service.ProductService;
@@ -31,8 +31,8 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(productService.getAllProducts());
     }
 
-    @GetMapping
-    public ResponseEntity<Page<ProductModel>> getAllPaginatedProducts(Pageable pageable) {
+    @GetMapping("/products-paginated")
+    public ResponseEntity<Page<ProductModel>> getAllPaginatedProducts2(Pageable pageable) {
         return ResponseEntity.status(HttpStatus.OK).body(productService.getAllPaginatedProducts(pageable));
     }
 

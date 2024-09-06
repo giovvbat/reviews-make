@@ -1,6 +1,6 @@
 package com.giovanna.reviewsmake.controller;
 
-import com.giovanna.reviewsmake.dto.*;
+import com.giovanna.reviewsmake.dto.user.*;
 import com.giovanna.reviewsmake.model.UserModel;
 import com.giovanna.reviewsmake.service.UserService;
 import jakarta.validation.Valid;
