@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,7 +26,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseRecordDto> validateUser(@RequestBody @Valid LoginRequestRecordDto loginRequestRecordDto) {
+    public ResponseEntity<LoginResponseRecordDto> validateUser(@RequestBody @Valid LoginRequestRecordDto loginRequestRecordDto) throws FileNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(userService.validateUser(loginRequestRecordDto));
     }
 

@@ -1,7 +1,7 @@
 package com.giovanna.reviewsmake.infra.exception.user;
 
 public class EmailAlreadyTakenException extends RuntimeException {
-    private static final String defaultMessage = "Email already taken!";
+    private static final String defaultMessage = "email already taken";
 
     public EmailAlreadyTakenException() {
         super(defaultMessage);

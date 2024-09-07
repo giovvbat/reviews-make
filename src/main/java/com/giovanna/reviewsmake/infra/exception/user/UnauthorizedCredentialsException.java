@@ -1,7 +1,7 @@
 package com.giovanna.reviewsmake.infra.exception.user;
 
 public class UnauthorizedCredentialsException extends RuntimeException {
-    private static final String defaultMessage = "Unauthorized credentials!";
+    private static final String defaultMessage = "unauthorized credentials";
 
     public UnauthorizedCredentialsException() {
         super(defaultMessage);

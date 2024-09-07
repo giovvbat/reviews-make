@@ -1,7 +1,7 @@
 package com.giovanna.reviewsmake.infra.exception.user;
 
 public class UserNotFoundException extends RuntimeException {
-    private static final String defaultMessage = "User not found!";
+    private static final String defaultMessage = "user not found";
 
     public UserNotFoundException() {
         super(defaultMessage);

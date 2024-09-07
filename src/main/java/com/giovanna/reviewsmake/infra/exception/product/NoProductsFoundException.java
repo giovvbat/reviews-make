@@ -1,7 +1,7 @@
 package com.giovanna.reviewsmake.infra.exception.product;
 
 public class NoProductsFoundException extends RuntimeException {
-    private static final String defaultMessage = "No products found!";
+    private static final String defaultMessage = "no products found";
 
     public NoProductsFoundException() {
         super(defaultMessage);

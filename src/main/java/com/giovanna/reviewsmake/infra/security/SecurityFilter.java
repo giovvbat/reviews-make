@@ -10,14 +10,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Optional;
 
 @Component
@@ -38,14 +36,14 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
-        /*freeing endpoints with no authentication needed*/
+        /*freeing endpoints with zero authentication needed*/
         if (isFilterSkippable(request)) {
             filterChain.doFilter(request, response);
             return;
         }
 
         String token = this.resolveToken(request);
-        System.out.println("to aqui");
+
         /*success while retrieving token*/
         if (token != null) {
             String login = tokenService.verifyToken(token);
@@ -60,10 +58,11 @@ public class SecurityFilter extends OncePerRequestFilter {
                     return;
                 }
 
-                var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user.get(), null, authorities);
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user.get(), null, user.get().getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
+        } else {
+            //throw new BadCredentialsException("skjcn");
         }
 
         filterChain.doFilter(request, response);
@@ -80,7 +79,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         return null;
     }
 
-    private boolean isFilterSkippable(HttpServletRequest request) {
+    public boolean isFilterSkippable(HttpServletRequest request) {
         for (String freeEndpoint : freeEndpoints) {
             if (request.getRequestURI().endsWith(freeEndpoint)) {
                 return true;
