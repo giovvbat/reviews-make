@@ -7,6 +7,7 @@ import com.giovanna.reviewsmake.model.ProductModel;
 import com.giovanna.reviewsmake.model.ReviewModel;
 import com.giovanna.reviewsmake.repository.ProductRepository;
 import com.giovanna.reviewsmake.repository.ReviewRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,6 +24,7 @@ public class ProductService {
     @Autowired
     private ReviewRepository reviewRepository;
 
+    @Transactional
     public ProductModel saveProduct(ProductRecordDto productRecordDto) {
         var productModel = new ProductModel();
         BeanUtils.copyProperties(productRecordDto, productModel);
@@ -55,6 +57,7 @@ public class ProductService {
         return reviewRepository.findAllByReviewProduct(product);
     }
 
+    @Transactional
     public ProductModel updateProduct(UUID productId, ProductRecordDto productRecordDto) {
         ProductModel product = productRepository.findById(productId)
                 .orElseThrow(ProductNotFoundException::new);
@@ -64,10 +67,12 @@ public class ProductService {
         return productRepository.save(product);
     }
 
+    @Transactional
     public void deleteProduct(UUID productId) {
-        productRepository.findById(productId)
+        ProductModel product = productRepository.findById(productId)
                 .orElseThrow(ProductNotFoundException::new);
 
+        reviewRepository.deleteByReviewProduct(product);
         productRepository.deleteById(productId);
     }
 }

@@ -9,11 +9,10 @@ function add_review() {
 
 document.addEventListener('DOMContentLoaded', function() {
     if (!token) {
-        alert('Usuário não autenticado');
+        window.location.href = '../../usuarios/entrar/login.html';
         return;
     }
     if (productId) {
-        add_review()
         fetch(`http://localhost:8080/products/${productId}/reviews`, {
             headers: {
                 'Accept': 'application/json',
@@ -29,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
         .then(data => {
+            add_review()
             const table = document.getElementById('reviews-table-body');
             data.forEach(review => {
                 const row = document.createElement('tr');

@@ -3,8 +3,10 @@ package com.giovanna.reviewsmake.service;
 import com.giovanna.reviewsmake.dto.user.*;
 import com.giovanna.reviewsmake.infra.exception.user.*;
 import com.giovanna.reviewsmake.model.UserModel;
+import com.giovanna.reviewsmake.repository.ReviewRepository;
 import com.giovanna.reviewsmake.repository.UserRepository;
 import com.giovanna.reviewsmake.infra.security.TokenService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,12 +20,15 @@ import java.util.UUID;
 @Service
 public class UserService {
     @Autowired
+    private ReviewRepository reviewRepository;
+    @Autowired
     private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
     TokenService tokenService;
 
+    @Transactional
     public UserModel saveUser(UserRecordDto userRecordDto) {
         verifyAvailableUserCredential(new VerifyAvailableUserCredentialsRecordDto(userRecordDto.username(), userRecordDto.email()));
 
@@ -62,6 +67,7 @@ public class UserService {
                 .orElseThrow(UserNotFoundException::new);
     }
 
+    @Transactional
     public UpdateUserResponseRecordDto updateUser(UUID userId, UserRecordDto userRecordDto) {
         UserModel user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
@@ -74,6 +80,7 @@ public class UserService {
         return new UpdateUserResponseRecordDto(userRepository.save(user), token);
     }
 
+    @Transactional
     public UserModel redefineUserPassword(RedefineUserPasswordRecordDto redefineUserPasswordRecordDto) {
         Optional<UserModel> userByCredential = userRepository.findByUsername(redefineUserPasswordRecordDto.credential())
                 .or(() -> userRepository.findByEmail(redefineUserPasswordRecordDto.credential()));
@@ -84,6 +91,7 @@ public class UserService {
         }).orElseThrow(() -> new UnauthorizedCredentialsException("Unauthorized credential!"));
     }
 
+    @Transactional
     public UserModel updateUserPassword(UpdateUserPasswordRecordDto updateUserPasswordRecordDto) {
         UserModel user = userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
                 .orElseThrow(UserNotFoundException::new);
@@ -101,10 +109,12 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    @Transactional
     public void deleteUser(UUID userId) {
-        userRepository.findById(userId)
+        UserModel user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
+        reviewRepository.deleteByReviewUser(user);
         userRepository.deleteById(userId);
     }
 

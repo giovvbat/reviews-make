@@ -11,6 +11,7 @@ import com.giovanna.reviewsmake.model.UserModel;
 import com.giovanna.reviewsmake.repository.ProductRepository;
 import com.giovanna.reviewsmake.repository.ReviewRepository;
 import com.giovanna.reviewsmake.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ public class ReviewService {
     @Autowired
     private UserRepository userRepository;
 
+    @Transactional
     public ReviewModel saveReview(ReviewRecordDto reviewRecordDto) {
         UserModel user = userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
                 .orElseThrow(UserNotFoundException::new);
@@ -57,6 +59,7 @@ public class ReviewService {
                 .orElseThrow(ReviewNotFoundException::new);
     }
 
+    @Transactional
     public ReviewModel updateReview(UUID reviewId, ReviewRecordDto reviewRecordDto) {
         ReviewModel review = reviewRepository.findById(reviewId)
                 .orElseThrow(ReviewNotFoundException::new);
@@ -74,6 +77,7 @@ public class ReviewService {
         return reviewRepository.save(review);
     }
 
+    @Transactional
     public void deleteReview(UUID reviewId) {
         reviewRepository.findById(reviewId)
                 .orElseThrow(ReviewNotFoundException::new);

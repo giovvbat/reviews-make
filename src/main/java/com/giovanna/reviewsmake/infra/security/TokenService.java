@@ -40,7 +40,7 @@ public class TokenService {
                     .verify(token)
                     .getSubject();
         } catch(JWTVerificationException exception) {
-            /*verificar se é expirado ou inválido*/
+            /*fail while verifying token*/
             return null;
         }
     }

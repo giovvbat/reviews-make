@@ -1,4 +1,6 @@
 package com.giovanna.reviewsmake.dto.error;
 
-public record RestErrorRecordDto(String status, String message) {
+import jakarta.validation.constraints.NotBlank;
+
+public record RestErrorRecordDto(@NotBlank String status, @NotBlank String message) {
 }

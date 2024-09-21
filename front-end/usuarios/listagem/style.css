@@ -1,0 +1,17 @@
+.btn-primary {
+    background-color: #EC407A;
+    border-color: #EC407A;
+    font-weight: 500;
+}
+
+.btn-primary:hover {
+    background-color: #D81B60;
+    border-color: #D81B60;
+}
+
+.btn-extra-small {
+    padding: 0.5rem 0.6rem;
+    font-size: 0.75rem;
+    line-height: 1;
+    border-radius: 0.2rem;
+}

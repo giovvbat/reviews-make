@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,12 +28,11 @@ public class ProductController {
 
     @GetMapping("/products")
     public ResponseEntity<Object> getAllProducts() {
-        System.out.println("entrei no controller");
         return ResponseEntity.status(HttpStatus.OK).body(productService.getAllProducts());
     }
 
     @GetMapping("/products-paginated")
-    public ResponseEntity<Page<ProductModel>> getAllPaginatedProducts2(Pageable pageable) {
+    public ResponseEntity<Page<ProductModel>> getAllPaginatedProducts(Pageable pageable) {
         return ResponseEntity.status(HttpStatus.OK).body(productService.getAllPaginatedProducts(pageable));
     }
 

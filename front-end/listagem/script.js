@@ -2,7 +2,7 @@ const token = localStorage.getItem('token');
 
 document.addEventListener('DOMContentLoaded', function() {
     if (!token) {
-        alert('Usuário não autenticado');
+        window.location.href = '../../usuarios/entrar/login.html';
         return;
     }
     fetch('http://localhost:8080/products', {
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td>${product.name}</td>
                 <td>${product.brand}</td>
                 <td>${product.value}</td>
-                 <td><button class="btn btn-primary btn-extra-small" onclick="reviews('${product.productId}')">Ver Detalhes</button></td>
+                <td><button class="btn btn-primary btn-extra-small" onclick="reviews('${product.productId}')">Ver Detalhes</button></td>
             `;
             table.appendChild(row);
         });
@@ -40,4 +40,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function reviews(productId) {
     window.location.href = `../reviews/listagem/reviews.html?productId=${productId}`;
-};
+}

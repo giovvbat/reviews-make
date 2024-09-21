@@ -61,8 +61,6 @@ public class SecurityFilter extends OncePerRequestFilter {
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user.get(), null, user.get().getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-        } else {
-            //throw new BadCredentialsException("skjcn");
         }
 
         filterChain.doFilter(request, response);
