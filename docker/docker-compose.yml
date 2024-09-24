@@ -7,22 +7,23 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/novo-banco
-      SPRING_DATASOURCE_USERNAME: novo-usuario
-      SPRING_DATASOURCE_PASSWORD: nova-senha
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/docker-banco
+      SPRING_DATASOURCE_USERNAME: docker-usuario
+      SPRING_DATASOURCE_PASSWORD: docker-senha
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       api.security.token.secret: lupita-kitty-cat
     depends_on:
       - mysql
+    restart: always
 
   mysql:
     image: mysql:8.0
     container_name: mysql-container
     environment:
-      MYSQL_ROOT_PASSWORD: senha_root
-      MYSQL_DATABASE: novo-banco
-      MYSQL_USER: novo-usuario
-      MYSQL_PASSWORD: nova-senha
+      MYSQL_ROOT_PASSWORD: docker-senha-root
+      MYSQL_DATABASE: docker-banco
+      MYSQL_USER: docker-usuario
+      MYSQL_PASSWORD: docker-senha
     ports:
       - "3307:3306"
     volumes:
