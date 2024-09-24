@@ -1,0 +1,32 @@
+services:
+  spring-app:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    container_name: spring-app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/novo-banco
+      SPRING_DATASOURCE_USERNAME: novo-usuario
+      SPRING_DATASOURCE_PASSWORD: nova-senha
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      api.security.token.secret: lupita-kitty-cat
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: senha_root
+      MYSQL_DATABASE: novo-banco
+      MYSQL_USER: novo-usuario
+      MYSQL_PASSWORD: nova-senha
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:
