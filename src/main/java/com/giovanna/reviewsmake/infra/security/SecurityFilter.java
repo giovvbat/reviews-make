@@ -33,11 +33,10 @@ public class SecurityFilter extends OncePerRequestFilter {
         freeEndpoints.add("users/register");
     }
 
-
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         /*freeing endpoints with zero authentication needed*/
-        if (isFilterSkippable(request)) {
+        if (isFilterSkippable(request, freeEndpoints)) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -66,7 +65,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private String resolveToken(HttpServletRequest request) {
+    public String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
 
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
@@ -77,9 +76,9 @@ public class SecurityFilter extends OncePerRequestFilter {
         return null;
     }
 
-    public boolean isFilterSkippable(HttpServletRequest request) {
+    public boolean isFilterSkippable(HttpServletRequest request, ArrayList<String> freeEndpoints) {
         for (String freeEndpoint : freeEndpoints) {
-            if (request.getRequestURI().endsWith(freeEndpoint)) {
+            if (request.getRequestURI().endsWith(freeEndpoint) && request.getRequestURI().startsWith(freeEndpoint)) {
                 return true;
             }
         }

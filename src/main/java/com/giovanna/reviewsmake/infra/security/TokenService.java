@@ -26,7 +26,6 @@ public class TokenService {
                     .withExpiresAt(this.generateExpirationTime())
                     .sign(algorithm);
         } catch(JWTCreationException exception) {
-            /*make custom exception?*/
             throw new JWTCreationException("Error while creating token!", exception);
         }
     }

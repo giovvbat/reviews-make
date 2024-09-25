@@ -18,13 +18,18 @@ public class RestCustomExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new RestErrorRecordDto(HttpStatus.NOT_FOUND.toString(), ex.getMessage()));
     }
 
-    @ExceptionHandler({UsernameAlreadyTakenException.class, EmailAlreadyTakenException.class, SamePasswordException.class})
+    @ExceptionHandler({UsernameAlreadyTakenException.class, EmailAlreadyTakenException.class})
     public ResponseEntity<RestErrorRecordDto> handleConflictException(RuntimeException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new RestErrorRecordDto(HttpStatus.CONFLICT.toString(), ex.getMessage()));
     }
 
+    @ExceptionHandler(SamePasswordException.class)
+    public ResponseEntity<RestErrorRecordDto> handleBadRequestException(SamePasswordException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RestErrorRecordDto(HttpStatus.CONFLICT.toString(), ex.getMessage()));
+    }
+
     @ExceptionHandler(UnauthorizedCredentialsException.class)
-    public ResponseEntity<RestErrorRecordDto> handleUnauthorizedException(RuntimeException ex) {
+    public ResponseEntity<RestErrorRecordDto> handleUnauthorizedException(UnauthorizedCredentialsException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new RestErrorRecordDto(HttpStatus.UNAUTHORIZED.toString(), ex.getMessage()));
     }
 }
