@@ -6,9 +6,11 @@ com/giovanna/reviewsmake/infra/exception/product/NoProductsFoundException.class
 com/giovanna/reviewsmake/dto/user/RedefineUserPasswordRecordDto.class
 com/giovanna/reviewsmake/infra/exception/user/SamePasswordException.class
 com/giovanna/reviewsmake/ReviewsMakeApplication.class
+com/giovanna/reviewsmake/mapper/ReviewMapper.class
 com/giovanna/reviewsmake/service/ReviewService.class
 com/giovanna/reviewsmake/model/UserModel.class
 com/giovanna/reviewsmake/dto/user/VerifyAvailableUserCredentialsRecordDto.class
+com/giovanna/reviewsmake/mapper/UserMapperImpl.class
 com/giovanna/reviewsmake/dto/review/ReviewRecordDto.class
 com/giovanna/reviewsmake/service/UserService.class
 com/giovanna/reviewsmake/infra/exception/user/NoUsersFoundException.class
@@ -19,6 +21,8 @@ com/giovanna/reviewsmake/infra/config/CustomWebConfigurer.class
 com/giovanna/reviewsmake/controller/ReviewController.class
 com/giovanna/reviewsmake/controller/ProductController.class
 com/giovanna/reviewsmake/infra/handler/custom/RestCustomExceptionHandler.class
+com/giovanna/reviewsmake/mapper/ProductMapper.class
+com/giovanna/reviewsmake/mapper/UserMapper.class
 com/giovanna/reviewsmake/infra/exception/review/NoReviewsFoundException.class
 com/giovanna/reviewsmake/infra/exception/review/ReviewNotFoundException.class
 com/giovanna/reviewsmake/service/ProductService.class
@@ -33,9 +37,11 @@ com/giovanna/reviewsmake/dto/user/LoginResponseRecordDto.class
 com/giovanna/reviewsmake/dto/user/UpdateUserResponseRecordDto.class
 com/giovanna/reviewsmake/dto/user/UserRecordDto.class
 com/giovanna/reviewsmake/infra/security/SecurityConfig.class
+com/giovanna/reviewsmake/mapper/ReviewMapperImpl.class
 com/giovanna/reviewsmake/infra/exception/user/UnauthorizedCredentialsException.class
 com/giovanna/reviewsmake/dto/user/UpdateUserPasswordRecordDto.class
 com/giovanna/reviewsmake/repository/UserRepository.class
+com/giovanna/reviewsmake/mapper/ProductMapperImpl.class
 com/giovanna/reviewsmake/infra/security/SecurityFilter.class
 com/giovanna/reviewsmake/dto/product/ProductRecordDto.class
 com/giovanna/reviewsmake/infra/handler/custom/CustomAuthenticationEntryPoint.class

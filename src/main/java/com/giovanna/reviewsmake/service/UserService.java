@@ -2,6 +2,7 @@ package com.giovanna.reviewsmake.service;
 
 import com.giovanna.reviewsmake.dto.user.*;
 import com.giovanna.reviewsmake.infra.exception.user.*;
+import com.giovanna.reviewsmake.mapper.UserMapper;
 import com.giovanna.reviewsmake.model.UserModel;
 import com.giovanna.reviewsmake.repository.ReviewRepository;
 import com.giovanna.reviewsmake.repository.UserRepository;
@@ -32,8 +33,7 @@ public class UserService {
     public UserModel saveUser(UserRecordDto userRecordDto) {
         verifyAvailableUserCredential(new VerifyAvailableUserCredentialsRecordDto(userRecordDto.username(), userRecordDto.email()));
 
-        var userModel = new UserModel();
-        BeanUtils.copyProperties(userRecordDto, userModel);
+        UserModel userModel = UserMapper.instance.toEntity(userRecordDto);
         userModel.setPassword(passwordEncoder.encode(userRecordDto.password()));
 
         return userRepository.save(userModel);
