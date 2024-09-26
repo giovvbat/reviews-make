@@ -30,6 +30,9 @@
 /Users/giovannabatista/Desktop/reviews-make/src/main/java/com/giovanna/reviewsmake/infra/security/SecurityConfig.java
 /Users/giovannabatista/Desktop/reviews-make/src/main/java/com/giovanna/reviewsmake/infra/security/SecurityFilter.java
 /Users/giovannabatista/Desktop/reviews-make/src/main/java/com/giovanna/reviewsmake/infra/security/TokenService.java
+/Users/giovannabatista/Desktop/reviews-make/src/main/java/com/giovanna/reviewsmake/mapper/ProductMapper.java
+/Users/giovannabatista/Desktop/reviews-make/src/main/java/com/giovanna/reviewsmake/mapper/ReviewMapper.java
+/Users/giovannabatista/Desktop/reviews-make/src/main/java/com/giovanna/reviewsmake/mapper/UserMapper.java
 /Users/giovannabatista/Desktop/reviews-make/src/main/java/com/giovanna/reviewsmake/model/ProductModel.java
 /Users/giovannabatista/Desktop/reviews-make/src/main/java/com/giovanna/reviewsmake/model/ReviewModel.java
 /Users/giovannabatista/Desktop/reviews-make/src/main/java/com/giovanna/reviewsmake/model/UserModel.java

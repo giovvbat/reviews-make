@@ -3,6 +3,7 @@ package com.giovanna.reviewsmake.service;
 import com.giovanna.reviewsmake.dto.product.ProductRecordDto;
 import com.giovanna.reviewsmake.infra.exception.product.NoProductsFoundException;
 import com.giovanna.reviewsmake.infra.exception.product.ProductNotFoundException;
+import com.giovanna.reviewsmake.mapper.ProductMapper;
 import com.giovanna.reviewsmake.model.ProductModel;
 import com.giovanna.reviewsmake.model.ReviewModel;
 import com.giovanna.reviewsmake.repository.ProductRepository;
@@ -26,8 +27,8 @@ public class ProductService {
 
     @Transactional
     public ProductModel saveProduct(ProductRecordDto productRecordDto) {
-        var productModel = new ProductModel();
-        BeanUtils.copyProperties(productRecordDto, productModel);
+        ProductModel productModel = ProductMapper.instance.toEntity(productRecordDto);
+
         return productRepository.save(productModel);
     }
 
