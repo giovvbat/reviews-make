@@ -10,11 +10,14 @@ import com.giovanna.reviewsmake.infra.security.TokenService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -76,6 +79,12 @@ public class UserService {
         BeanUtils.copyProperties(userRecordDto, user);
         user.setPassword(passwordEncoder.encode(userRecordDto.password()));
         String token = tokenService.generateToken(user);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && Objects.equals(authentication.getName(), userRecordDto.username())) {
+            Authentication newAuthentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(newAuthentication);
+        }
 
         return new UpdateUserResponseRecordDto(userRepository.save(user), token);
     }

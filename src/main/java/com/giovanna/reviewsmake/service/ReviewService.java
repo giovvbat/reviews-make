@@ -5,6 +5,7 @@ import com.giovanna.reviewsmake.infra.exception.review.ReviewNotFoundException;
 import com.giovanna.reviewsmake.infra.exception.user.UserNotFoundException;
 import com.giovanna.reviewsmake.infra.exception.review.NoReviewsFoundException;
 import com.giovanna.reviewsmake.infra.exception.product.ProductNotFoundException;
+import com.giovanna.reviewsmake.infra.exception.user.UserNotLoggedException;
 import com.giovanna.reviewsmake.model.ProductModel;
 import com.giovanna.reviewsmake.model.ReviewModel;
 import com.giovanna.reviewsmake.model.UserModel;
@@ -13,6 +14,7 @@ import com.giovanna.reviewsmake.repository.ReviewRepository;
 import com.giovanna.reviewsmake.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +32,10 @@ public class ReviewService {
 
     @Transactional
     public ReviewModel saveReview(ReviewRecordDto reviewRecordDto) {
+        if (SecurityContextHolder.getContext().getAuthentication() == null) {
+            throw new UserNotLoggedException();
+        }
+
         UserModel user = userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
                 .orElseThrow(UserNotFoundException::new);
 

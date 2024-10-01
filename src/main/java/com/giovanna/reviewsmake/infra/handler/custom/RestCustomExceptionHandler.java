@@ -28,7 +28,7 @@ public class RestCustomExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RestErrorRecordDto(HttpStatus.CONFLICT.toString(), ex.getMessage()));
     }
 
-    @ExceptionHandler(UnauthorizedCredentialsException.class)
+    @ExceptionHandler({UnauthorizedCredentialsException.class, UserNotLoggedException.class})
     public ResponseEntity<RestErrorRecordDto> handleUnauthorizedException(UnauthorizedCredentialsException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new RestErrorRecordDto(HttpStatus.UNAUTHORIZED.toString(), ex.getMessage()));
     }
