@@ -2,7 +2,7 @@ package com.giovanna.reviewsmake.infra.handler.custom;
 
 import com.giovanna.reviewsmake.infra.security.SecurityFilter;
 import com.giovanna.reviewsmake.infra.security.TokenService;
-import com.giovanna.reviewsmake.model.UserModel;
+import com.giovanna.reviewsmake.domain.model.UserModel;
 import com.giovanna.reviewsmake.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.ServletException;

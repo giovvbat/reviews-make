@@ -1,6 +1,6 @@
 package com.giovanna.reviewsmake.infra.security;
 
-import com.giovanna.reviewsmake.model.UserModel;
+import com.giovanna.reviewsmake.domain.model.UserModel;
 import com.giovanna.reviewsmake.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.FilterChain;

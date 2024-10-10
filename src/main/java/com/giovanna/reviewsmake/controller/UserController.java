@@ -1,7 +1,7 @@
 package com.giovanna.reviewsmake.controller;
 
-import com.giovanna.reviewsmake.dto.user.*;
-import com.giovanna.reviewsmake.model.UserModel;
+import com.giovanna.reviewsmake.domain.dto.user.*;
+import com.giovanna.reviewsmake.domain.model.UserModel;
 import com.giovanna.reviewsmake.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,13 +45,13 @@ public class UserController {
     }
 
     /*user is logged, wants to change password*/
-    @PutMapping("/update-password")
+    @PatchMapping("/update-password")
     public ResponseEntity<UserModel> updateUserPassword(@RequestBody @Valid UpdateUserPasswordRecordDto updateUserPasswordRecordDto) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.updateUserPassword(updateUserPasswordRecordDto));
     }
 
     /*user forgot password, wants to change password to make log-in possible*/
-    @PutMapping("/redefine-password")
+    @PatchMapping("/redefine-password")
     public ResponseEntity<UserModel> redefineUserPassword(@RequestBody @Valid RedefineUserPasswordRecordDto redefineUserPasswordRecordDto) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.redefineUserPassword(redefineUserPasswordRecordDto));
     }
@@ -60,6 +60,6 @@ public class UserController {
     public ResponseEntity<String> deleteUser(@PathVariable(value="id") UUID userId) {
         userService.deleteUser(userId);
 
-        return ResponseEntity.status(HttpStatus.OK).body("User deleted successfully");
+        return ResponseEntity.status(HttpStatus.OK).body("User successfully deleted!");
     }
 }

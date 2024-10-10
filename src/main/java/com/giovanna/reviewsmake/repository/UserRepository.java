@@ -1,6 +1,6 @@
 package com.giovanna.reviewsmake.repository;
 
-import com.giovanna.reviewsmake.model.UserModel;
+import com.giovanna.reviewsmake.domain.model.UserModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

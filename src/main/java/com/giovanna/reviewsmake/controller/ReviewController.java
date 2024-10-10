@@ -1,7 +1,7 @@
 package com.giovanna.reviewsmake.controller;
 
-import com.giovanna.reviewsmake.dto.review.ReviewRecordDto;
-import com.giovanna.reviewsmake.model.ReviewModel;
+import com.giovanna.reviewsmake.domain.dto.review.ReviewRecordDto;
+import com.giovanna.reviewsmake.domain.model.ReviewModel;
 import com.giovanna.reviewsmake.service.ReviewService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

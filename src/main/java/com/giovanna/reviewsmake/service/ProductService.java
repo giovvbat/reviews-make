@@ -1,11 +1,11 @@
 package com.giovanna.reviewsmake.service;
 
-import com.giovanna.reviewsmake.dto.product.ProductRecordDto;
+import com.giovanna.reviewsmake.domain.dto.product.ProductRecordDto;
 import com.giovanna.reviewsmake.infra.exception.product.NoProductsFoundException;
 import com.giovanna.reviewsmake.infra.exception.product.ProductNotFoundException;
-import com.giovanna.reviewsmake.mapper.ProductMapper;
-import com.giovanna.reviewsmake.model.ProductModel;
-import com.giovanna.reviewsmake.model.ReviewModel;
+import com.giovanna.reviewsmake.domain.mapper.ProductMapper;
+import com.giovanna.reviewsmake.domain.model.ProductModel;
+import com.giovanna.reviewsmake.domain.model.ReviewModel;
 import com.giovanna.reviewsmake.repository.ProductRepository;
 import com.giovanna.reviewsmake.repository.ReviewRepository;
 import jakarta.transaction.Transactional;

@@ -1,6 +1,7 @@
 package com.giovanna.reviewsmake.infra.handler.custom;
 
-import com.giovanna.reviewsmake.dto.error.RestErrorRecordDto;
+import com.auth0.jwt.exceptions.JWTCreationException;
+import com.giovanna.reviewsmake.domain.dto.error.RestErrorRecordDto;
 import com.giovanna.reviewsmake.infra.exception.product.NoProductsFoundException;
 import com.giovanna.reviewsmake.infra.exception.product.ProductNotFoundException;
 import com.giovanna.reviewsmake.infra.exception.review.NoReviewsFoundException;
@@ -31,5 +32,10 @@ public class RestCustomExceptionHandler {
     @ExceptionHandler({UnauthorizedCredentialsException.class, UserNotLoggedException.class})
     public ResponseEntity<RestErrorRecordDto> handleUnauthorizedException(UnauthorizedCredentialsException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new RestErrorRecordDto(HttpStatus.UNAUTHORIZED.toString(), ex.getMessage()));
+    }
+
+    @ExceptionHandler(JWTCreationException.class)
+    public ResponseEntity<RestErrorRecordDto> handleJWTCreationException(JWTCreationException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RestErrorRecordDto(HttpStatus.INTERNAL_SERVER_ERROR.toString(), "unexpected error ocurred"));
     }
 }

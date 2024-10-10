@@ -1,9 +1,9 @@
 package com.giovanna.reviewsmake.service;
 
-import com.giovanna.reviewsmake.dto.user.*;
+import com.giovanna.reviewsmake.domain.dto.user.*;
 import com.giovanna.reviewsmake.infra.exception.user.*;
-import com.giovanna.reviewsmake.mapper.UserMapper;
-import com.giovanna.reviewsmake.model.UserModel;
+import com.giovanna.reviewsmake.domain.mapper.UserMapper;
+import com.giovanna.reviewsmake.domain.model.UserModel;
 import com.giovanna.reviewsmake.repository.ReviewRepository;
 import com.giovanna.reviewsmake.repository.UserRepository;
 import com.giovanna.reviewsmake.infra.security.TokenService;
@@ -97,25 +97,28 @@ public class UserService {
         return userByCredential.map(user -> {
             user.setPassword(passwordEncoder.encode(redefineUserPasswordRecordDto.password()));
             return userRepository.save(user);
-        }).orElseThrow(() -> new UnauthorizedCredentialsException("Unauthorized credential!"));
+        }).orElseThrow(() -> new UnauthorizedCredentialsException("unauthorized credential"));
     }
 
     @Transactional
     public UserModel updateUserPassword(UpdateUserPasswordRecordDto updateUserPasswordRecordDto) {
-        UserModel user = userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
-                .orElseThrow(UserNotFoundException::new);
+        Optional<UserModel> user = userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 
-        if (!passwordEncoder.matches(updateUserPasswordRecordDto.currentPassword(), user.getPassword())) {
-            throw new UnauthorizedCredentialsException("Wrong password provided!");
+        if (user.isEmpty()) {
+            throw new UserNotFoundException("no user logged");
         }
 
-        if (passwordEncoder.matches(updateUserPasswordRecordDto.newPassword(), user.getPassword())) {
+        if (!passwordEncoder.matches(updateUserPasswordRecordDto.currentPassword(), user.get().getPassword())) {
+            throw new UnauthorizedCredentialsException("wrong password provided");
+        }
+
+        if (passwordEncoder.matches(updateUserPasswordRecordDto.newPassword(), user.get().getPassword())) {
             throw new SamePasswordException();
         }
 
-        user.setPassword(passwordEncoder.encode(updateUserPasswordRecordDto.newPassword()));
+        user.get().setPassword(passwordEncoder.encode(updateUserPasswordRecordDto.newPassword()));
 
-        return userRepository.save(user);
+        return userRepository.save(user.get());
     }
 
     @Transactional

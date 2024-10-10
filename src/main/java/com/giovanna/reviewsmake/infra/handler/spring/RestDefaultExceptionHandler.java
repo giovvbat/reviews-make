@@ -1,7 +1,6 @@
 package com.giovanna.reviewsmake.infra.handler.spring;
 
-import com.giovanna.reviewsmake.dto.error.RestErrorRecordDto;
-import org.antlr.v4.runtime.misc.Pair;
+import com.giovanna.reviewsmake.domain.dto.error.RestErrorRecordDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
